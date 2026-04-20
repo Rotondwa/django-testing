@@ -12,6 +12,24 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock_count = models.IntegerField(default=0)
 
+    """ 
+    Meta class is a Django class that is used to define metadata for the model.
+    In models, the class Meta is used to define Model Meta options that change how the model interacts with
+    the database and the Django admin interface. 
+    This is a Django constraint that is used to ensure that the price and stock count are always positive.
+    """
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(price__gte=0),
+                name="price_gt_0",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(stock_count__gte=0),
+                name="stock_count_gt_0",
+            ),
+        ]
+
     def get_discounted_price(self, discount_percentage: int) -> Decimal:
         """ Calculate the discounted price of the product """
         return self.price * (1 - discount_percentage / 100)
