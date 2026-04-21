@@ -1,8 +1,17 @@
 from django.shortcuts import render, redirect
 from .models import Product
 from .forms import ProductForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')
+
+def login(request):
+    return render(request, 'login.html')
+
 def homepage(request):
     return render(request, 'index.html')
 

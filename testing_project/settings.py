@@ -120,5 +120,5 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-
 AUTH_USER_MODEL = 'product.User'
+LOGIN_URL = '/login/'

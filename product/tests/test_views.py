@@ -1,11 +1,28 @@
 from django.test import TestCase, SimpleTestCase
 from django.urls import reverse
-from product.models import Product
+from product.models import Product, User
 
+
+class TestProfilePage(TestCase):
+
+    def test_profile_view_redirects_for_anonymous_users(self):
+        response = self.client.get(reverse('profile'))
+        self.assertRedirects(response, expected_url=f"{reverse('login')}?next={reverse('profile')}")
+
+    def test_profile_view_accessible_for_authenticated_users(self):
+        # Create a test user
+        user = User.objects.create_user(username='testuser', password='testpassword')
+
+        # Login the user
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('profile'))
+
+        # Check that the user is redirected to the login page
+        self.assertContains(response, 'testuser')
+        self.assertContains(response, 'Your Profile')
+        
 
 class TestHomePageView(SimpleTestCase):
-
-
 
     # def test_homepage_status_code(self):
     #     response = self.client.get('/')
