@@ -7,8 +7,9 @@ from django.db import IntegrityError
 # Create your tests here.
 class TestProductModel(TestCase):
 
-    def setUp(self):
-        self.product = Product.objects.create(name="Test Product", price=100.00, stock_count=10)
+    @classmethod
+    def setUpTestData(cls):
+        cls.product = Product.objects.create(name="Test Product", price=100.00, stock_count=10)
 
 
     def test_in_stock_property(self):
