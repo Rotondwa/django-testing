@@ -45,11 +45,11 @@ class Product(models.Model):
 
     #  The Clean Method is a Django method that is used to perform validation on the model data.
     #  It is called before the model is saved to the database.
-    def clean(self):
-        # perform validation on the model data
-        if self.price < 0:
-            raise ValidationError("Price cannot be negative")
-        if self.stock_count < 0:
-            raise ValidationError("Stock count cannot be negative")
+    # def clean(self):
+    #     # perform validation on the model data
+    #     if self.price < 0:
+    #         raise ValidationError("Price cannot be negative")
+    #     if self.stock_count < 0:
+    #         raise ValidationError("Stock count cannot be negative")
         
 

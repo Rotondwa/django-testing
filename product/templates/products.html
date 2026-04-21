@@ -2,6 +2,14 @@
 
 {% block content %}
 <h1>Products</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Product</button>
+</form>
+
+<hr>
 <ul>
     {% for product in products %}
     <li>{{ product.name }} - {{ product.price }} - {{ product.stock_count }}
