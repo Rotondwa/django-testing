@@ -34,9 +34,6 @@ class PostViewTest(TestCase):
         self.assertEqual(response.status_code, 503)
         mock_get.assert_called_once_with('https://jsonplaceholder.typicode.com/posts/1')
 
-
-
-
     
 class TestProfilePage(TestCase):
 
