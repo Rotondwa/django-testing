@@ -1,4 +1,4 @@
-from django.test import TestCase, SimpleTestCase
+from django.test import TestCase, SimpleTestCase, tag
 from django.urls import reverse
 from product.models import Product, User
 from unittest.mock import patch
@@ -37,10 +37,14 @@ class PostViewTest(TestCase):
     
 class TestProfilePage(TestCase):
 
+    """ This test is tagged with 'auth' to run only this test when the command is run with the tag """
+    @tag('auth')
     def test_profile_view_redirects_for_anonymous_users(self):
         response = self.client.get(reverse('profile'))
         self.assertRedirects(response, expected_url=f"{reverse('login')}?next={reverse('profile')}")
-
+    
+    """ This test is tagged with 'auth' to run only this test when the command is run with the tag """
+    @tag('auth')
     def test_profile_view_accessible_for_authenticated_users(self):
         # Create a test user
         user = User.objects.create_user(username='testuser', password='testpassword')
