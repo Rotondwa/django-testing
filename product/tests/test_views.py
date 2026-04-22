@@ -1,8 +1,43 @@
 from django.test import TestCase, SimpleTestCase
 from django.urls import reverse
 from product.models import Product, User
+from unittest.mock import patch
+import requests
 
 
+class PostViewTest(TestCase):
+
+    @patch('product.views.requests.get')
+    def test_post_view_sucess(self, mock_get):
+        print("mock get", mock_get)
+        mock_get.return_value.status_code = 200
+        return_data = {
+            "userId": 1,
+            "id": 1,
+            "title": "Test title",
+            "body": "Test body"
+        }
+
+        mock_get.return_value.json.return_value = return_data
+        # send request to the view
+        response = self.client.get(reverse('post'))
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, return_data)
+
+        # check that the mock get was called once with the correct url
+        mock_get.assert_called_once_with('https://jsonplaceholder.typicode.com/posts/1')
+
+    @patch('product.views.requests.get')
+    def test_post_view_error(self, mock_get):
+        mock_get.side_effect = requests.exceptions.RequestException
+        response = self.client.get(reverse('post'))
+        self.assertEqual(response.status_code, 503)
+        mock_get.assert_called_once_with('https://jsonplaceholder.typicode.com/posts/1')
+
+
+
+
+    
 class TestProfilePage(TestCase):
 
     def test_profile_view_redirects_for_anonymous_users(self):
